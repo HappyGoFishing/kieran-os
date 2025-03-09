@@ -1,29 +1,40 @@
 [org 0x7c00]
 
-jmp _boot_start
+jmp main
 
 startup_msg: db "booted kieran OS, hello world", 0
-msg2: db "what the sigma", 0
-buffer: times 10 db 0
 
-ILOD: jmp $ ; infinite loop of death
+death_loop: 
+    jmp $ ; infinite loop of death
 
 print:
     mov al, [bx]
     cmp al, 0
-    je done
+    je break
     int 0x10
     inc bx
     jmp print
     
+main:
+    ; initialise the stack
+    mov bp, 0x8000
+    mov sp, bp
 
-_boot_start:
+    ; enable bios teletype mode
     mov ah, 0x0e
+
+    ; push '!' on the stack
+    mov bl, '!'
+    push bx
+
     mov bx, startup_msg
     jmp print
-done:
-    jmp ILOD
-    
+break:
+    ; pop '!' off the stack into ax, and print it 
+    pop ax
+    int 0x10
 
+    jmp death_loop
+    
 times 510-($-$$) db 0
 db 0x55, 0xaa
