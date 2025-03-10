@@ -18,3 +18,6 @@ run_vm:
 
 run_vm_no_graphics:
 	qemu-system-x86_64 -nographic $(build_dir)/$(boot_outname)
+
+od:
+	objdump -D -b binary -m i8086 -M intel $(build_dir)/$(boot_outname)
