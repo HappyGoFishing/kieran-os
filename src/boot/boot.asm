@@ -6,7 +6,11 @@ startup_string:
     db "booted kieran OS, ", 0
 
 hello_world_string: 
-    db "hello world.", 0
+    db "hello world. ", 0
+
+%define BUFFER_SIZE 16
+buffer:
+     times BUFFER_SIZE db 0
 
 print:
     .loop:
@@ -30,6 +34,14 @@ main:
 
     mov bx, hello_world_string
     call print
+    
+rw_loop: ; repeatedly read characters and write them out
+    mov ah, 0x00
+    int 0x16
+    mov ah, 0x0e
+    int 0x10
+    jmp rw_loop
+
     jmp $
     
 
