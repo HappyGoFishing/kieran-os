@@ -1,6 +1,6 @@
 build_dir := out
-boot_outfile := boot.bin
-boot_srcfile := boot.asm
+boot_outfile := bootloader.bin
+boot_srcfile := bootloader.asm
 boot_outname := $(boot_outfile)
 
 default:
